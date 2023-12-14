@@ -1,10 +1,21 @@
 import { useState } from "react";
-
+import "./App.css";
 const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
+  <button onClick={handleClick} className="button">
+    {text}
+  </button>
 );
 
 const StatisticLine = (props) => {
+  if (props.text == "positive") {
+    return (
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+        <td>%</td>
+      </tr>
+    );
+  }
   return (
     <tr>
       <td>{props.text}</td>
@@ -33,20 +44,24 @@ const Statistics = (props) => {
     positiveNum = (positiveList.length / props.average.length) * 100;
   }
 
+  let averageNumber = averageNum.toFixed(2);
+  let positiveNumber = positiveNum.toFixed(2);
+
   return (
-    <table>
-      <StatisticLine text="good" value={props.good} />
-      <StatisticLine text="neutral" value={props.neutral} />
-      <StatisticLine text="bad" value={props.bad} />
-      <StatisticLine text="all" value={props.all} />
-      <StatisticLine text="average" value={averageNum} />
-      <StatisticLine text="positive" value={positiveNum} />
-    </table>
+    <div className="stat-container">
+      <table className="stat-table">
+        <StatisticLine text="good" value={props.good} />
+        <StatisticLine text="neutral" value={props.neutral} />
+        <StatisticLine text="bad" value={props.bad} />
+        <StatisticLine text="all" value={props.all} />
+        <StatisticLine text="average" value={averageNumber} />
+        <StatisticLine text="positive" value={positiveNumber} />
+      </table>
+    </div>
   );
 };
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
@@ -73,12 +88,14 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>give feedback</h1>
-      <Button handleClick={handleClickGood} text="good" />
-      <Button handleClick={handleClickNeutral} text="neutral" />
-      <Button handleClick={handleClickBad} text="bad" />
-      <h1>Statistics</h1>
+    <div className="container">
+      <h1 className="heading-1">Give Feedback</h1>
+      <div className="button-container">
+        <Button handleClick={handleClickGood} text="good" />
+        <Button handleClick={handleClickNeutral} text="neutral" />
+        <Button handleClick={handleClickBad} text="bad" />
+      </div>
+      <h1 className="stats">Statistics</h1>
       <Statistics
         good={good}
         neutral={neutral}
